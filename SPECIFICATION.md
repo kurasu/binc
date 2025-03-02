@@ -1,26 +1,5 @@
 # Specification for binc v1
 
-## File format
-
-A binc file consists of a _File Header_ followed by any number of _Changes_.
-
-The change header includes the data size, making it possible skip or store unknown change types as bytes.
-
-### File Header
-
-| Bytes | Payload        |
-|-------|----------------|
-| 4     | format: 'binc' |
-| 4     | version: 1     |
-
-### Change Header + Data
-
-| Bytes    | Payload        |
-|----------|----------------|
-| 1+       | change type ID |
-| 1+       | datasize       |
-| datasize | <change data>  |
-
 ## Data Types
 
 ### Variable length values
@@ -39,6 +18,9 @@ Examples:
 
 Variable length values are noted to take 1+ bytes of size in the specification and referred to as the type _length_. It
 is always unsigned.
+
+A special case is the change type ID, which is inverted with (XOR 0xFF for each byte) to make it easier to identify
+changes in a binary stream.
 
 ### Strings
 
@@ -64,6 +46,30 @@ There is a pre-existing root node with ID 0.
 
 _Attributes_ are stored in _Nodes_ using an ID and can be of various types. The ID is a (variable-length) integer value
 which acts as a key. The name of an attribute-id can be defined globally (optional).
+
+
+## File format
+
+A binc file consists of a _File Header_ followed by any number of _Changes_.
+
+The change header includes the data size, making it possible skip or store unknown change types as bytes.
+
+### File Header
+
+| Bytes | Payload        |
+|-------|----------------|
+| 4     | format: 'binc' |
+| 4     | version: 1     |
+
+### Change Header + Data
+
+| Bytes    | Type              | Payload        |
+|----------|-------------------|----------------|
+| 1+       | length (inverted) | change type ID |
+| 1+       | length            | datasize       |
+| datasize |                   | <change data>  |
+
+Note the value for the change type ID is inverted in the binary stream.
 
 ## Changes
 
