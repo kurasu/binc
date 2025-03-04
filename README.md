@@ -46,7 +46,8 @@ Various other features are considered for future versions, including:
 ## Implementations
 
 * [binc-rs](https://github.com/kurasu/binc-rs) Rust implementation where experiments using the format are being done. 
-
+* [binc-java](https://github.com/kurasu/binc-java) Java implementation of the exact v1 specification.
+  
 ## Contributing
 
 Contributions are welcome! Please open an issue or pull request.
