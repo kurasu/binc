@@ -7,7 +7,7 @@ binc file format [specification](SPECIFICATION.md)
 binc is a **bin**ary, **inc**remental data format for storing and transmitting structured data.
 
 Similar to file formats like XML and RIFF, binc is a generic format that can be used to store any kind of data. 
-But rather than storing the current state of the data, binc stores the history of changes which led to that state.
+But rather than storing the current state of the data, binc stores the history of operations which led to that state.
 
 You could think of it is as a file which contains its own (simple) version control system.
 
@@ -38,10 +38,10 @@ Various other features are considered for future versions, including:
 * Tags
 * Comments
 * More attribute types including arrays & BLOBs with partial updates
-* Network-protocol & application agnostic server
+* Network-protocol & application-agnostic server
 * Embedding image & audio data
 * Referencing other files
-* Application-specific change types
+* Application-specific operation types
 
 ## Implementations
 
