@@ -1,4 +1,4 @@
-# Specification binc v1
+# Specification binc v1 (draft)
 
 ## Data Types
 
@@ -31,8 +31,8 @@ Depending on the first byte (a₀), the varint is decoded as follows:
 | a₀    | Value                    |
 |-------|--------------------------|
 | < 220 | a₀                       |
-| < 253 | (a₀-220) << 8 + a₁ + 219 |
-| 253   | (a₁ << 8) + a₂ + 8411    |
+| < 252 | (a₀-220) << 8 + a₁ + 219 |
+| 252   | (a₁ << 8) + a₂ + 8411    |
 | 253   | a<sub>1-4</sub>          |
 | 254   | a<sub>1-5</sub>          |
 | 255   | a<sub>1-9</sub>          |
