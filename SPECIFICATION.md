@@ -5,7 +5,7 @@
 ### Varint (Variable length values)
 
 Lengths are stored with a custom variable-length integer encoding scheme that efficiently stores integers using fewer bytes for smaller values.
-It's loosely based on the SQLite4 varint format but allow larger values in the 2-byte representation and omits the 5-7 byte representations.
+It's loosely based on the SQLite4 varint format but allow larger values in the 2 and 3-byte representation and omits the 5-7 byte representations.
 
 Variable length values are noted to take 1+ bytes of size in the specification and referred to as the type _varint_. They are always unsigned.
 
@@ -15,27 +15,27 @@ For Operation IDs, the encoded varint value is inverted with XOR 0xFF for each b
 
 Depending on the value (a), the varint is encoded as follows:
 
-| a                | Bytes | b₀                 | b₁             | b₂              | b₃ | b₄ | b₅ | b₆ | b₇ | b₈ | b₉ |
-|------------------|-------|--------------------|----------------|-----------------|----|----|----|----|----|----|----|
-| < 220            | 1     | a                  |                |                 |    |    |    |    |    |    |    |
-| < 8411           | 2     | (a-219) >> 8 + 220 | (a-219) & 0xFF |                 |    |    |    |    |    |    |    |
-| < 73947          | 3     | 252                | (a-8411) >> 8  | (a-8411) & 0xFF |    |    |    |    |    |    |    |
-| < 2<sup>24</sup> | 4     | 253                | a₀             | a₁              | a₂ |    |    |    |    |    |    |
-| < 2<sup>32</sup> | 5     | 254                | a₀             | a₁              | a₂ | a₃ |    |    |    |    |    |
-| < 2<sup>64</sup> | 9     | 255                | a₀             | a₁              | a₂ | a₃ | a₄ | a₅ | a₆ | a₇ | a₈ |
+| a                | Bytes | b₀                   | b₁            | b₂       | b₃ | b₄ | b₅ | b₆ | b₇ | b₈ | b₉ |
+|------------------|-------|----------------------|---------------|----------|----|----|----|----|----|----|----|
+| < 205            | 1     | a                    |               |          |    |    |    |    |    |    |    |
+| < 8396           | 2     | 205 + (a-204) >> 8   | (a-204)       |          |    |    |    |    |    |    |    |
+| < 1056972        | 3     | 237 + (a-8396) >> 16 | (a-8396) >> 8 | (a-8396) |    |    |    |    |    |    |    |
+| < 2<sup>24</sup> | 4     | 253                  | a₀            | a₁       | a₂ |    |    |    |    |    |    |
+| < 2<sup>32</sup> | 5     | 254                  | a₀            | a₁       | a₂ | a₃ |    |    |    |    |    |
+| < 2<sup>64</sup> | 9     | 255                  | a₀            | a₁       | a₂ | a₃ | a₄ | a₅ | a₆ | a₇ | a₈ |
 
 ### Decoding
 
 Depending on the first byte (a₀), the varint is decoded as follows:
 
-| a₀    | Value                    |
-|-------|--------------------------|
-| < 220 | a₀                       |
-| < 252 | (a₀-220) << 8 + a₁ + 219 |
-| 252   | (a₁ << 8) + a₂ + 8411    |
-| 253   | a<sub>1-4</sub>          |
-| 254   | a<sub>1-5</sub>          |
-| 255   | a<sub>1-9</sub>          |
+| a₀    | Value                                  |
+|-------|----------------------------------------|
+| < 205 | a₀                                     |
+| < 237 | (a₀-205) << 8 + a₁ + 204               |
+| < 253 | (a₀-237) << 16 + (a₁ << 8) + a₂ + 8396 |
+| 253   | a<sub>1-4</sub>                        |
+| 254   | a<sub>1-5</sub>                        |
+| 255   | a<sub>1-9</sub>                        |
 
 ### Strings
 
