@@ -57,9 +57,13 @@ and must be contiguous. Nodes can have a _type_ and a _name_.
 
 There is a pre-existing root node with ID 0.
 
+### Type ID
+
+A type defines the kind of a node. As it is provided in the [Add Node](#add-node) operation an implementation can instanciate concrete classes based the type. The name of a Type can be defined globally (optional) using [Define Type Name](#define-type-name). ID 0 is reserved for an undefined type.
+
 ### Attributes
 
-_Attributes_ are stored in _Nodes_ using an ID and can be of various types. The ID is a varint which acts as a key. The name of an Attribute ID can be defined globally (optional).
+_Attributes_ are stored in _Nodes_ using an ID and can be of various types. The ID is a varint which acts as a key. The name of an Attribute ID can be defined globally (optional) using [Define Attribute Name](#define-attribute-name).
 
 ## File format
 
@@ -80,7 +84,7 @@ The Operation Header includes the data size, making it possible skip or store un
 |-------------|-----------------|--------------|
 | 1+          | inverted varint | Operation ID |
 | 1+          | varint          | data size    |
-| <data size> |                 | <data>       |
+| <data-size> |                 | <data>       |
 
 Note: the Operation ID uses an inverted varint representation.
 
@@ -97,11 +101,12 @@ Adds a new node to the container.
 The new node is added as a child of the specified parent node. As child nodes are index-based, the new node is inserted
 at the specified index and existing nodes with the same or higher index are shifted one step.
 
-| Bytes | Type    | Payload                         |
-|-------|---------|---------------------------------|
-| 1+    | node-id | id for new node                 |
-| 1+    | node-id | parent Node ID (root node is 0) |
-| 1+    | length  | insertion index in parent node  |
+| Bytes | Type     | Payload                         |
+|-------|----------|---------------------------------|
+| 1+    | node-id  | id for new node                 |
+| 1+    | Type ID  | type of new node                |
+| 1+    | node-id  | parent Node ID (root node is 0) |
+| 1+    | length   | insertion index in parent node  |
 
 ### Remove Node
 
@@ -144,7 +149,7 @@ nodes.
 
 Operation ID = 5
 
-Defines a global user-readable name for a type.
+Defines a global user-readable name for a type. Type ID must not be 0.
 
 | Bytes | Type    | Payload                        |
 |-------|---------|--------------------------------|
