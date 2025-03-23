@@ -80,11 +80,11 @@ The Operation Header includes the data size, making it possible skip or store un
 
 ### Operation Header + Data
 
-| Bytes       | Type            | Payload      |
-|-------------|-----------------|--------------|
-| 1+          | inverted varint | Operation ID |
-| 1+          | varint          | data size    |
-| <data-size> |                 | <data>       |
+| Bytes     | Type            | Payload      |
+|-----------|-----------------|--------------|
+| 1+        | inverted varint | Operation ID |
+| 1+        | varint          | data size    |
+| data-size |                 | data         |
 
 Note: the Operation ID uses an inverted varint representation.
 
