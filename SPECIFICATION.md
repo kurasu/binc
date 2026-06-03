@@ -92,6 +92,12 @@ Note: the Operation ID uses an inverted varint representation.
 
 Each Operation has an ID and a data payload. Each operation represents a modification of the in-memory data structure.
 
+Reserved IDs
+
+| Range | Hex                 | Usage           |
+|-------|---------------------|-----------------|
+| 8192–8395 | 0x2000 – 0x20CB | server/internal |
+
 ### Add Node
 
 Operation ID = 1
